@@ -20,9 +20,6 @@ describe Funkiset::Set do
     it "must be an Enumerable" do
       subject.counters.must_be_kind_of(Enumerable)
     end
-    it "must contain Counters" do
-      assert subject.counters.all? { |i| i.is_a?(Funkiset::Counter) }
-    end
   end
 
   describe "<<" do
