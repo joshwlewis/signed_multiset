@@ -1,6 +1,7 @@
 module Funkiset
   class Set
     include Enumerable
+    include Comparable
 
     def self.[](*list)
       new(list)
@@ -64,6 +65,38 @@ module Funkiset
 
     def counts
       counters.values
+    end
+
+    def sum
+      counts.inject(&:+)
+    end
+
+    def size
+      keys.size
+    end
+
+    alias_method :length, :size
+
+    def <=>(other)
+      if [:counters, :sum, :size].all? { |m| other.respond_to?(m) }
+        if counters == other.counters
+          0
+        elsif sum != other.sum
+          sum <=> other.sum
+        elsif size != other.size
+          size <=> other.size
+        else
+          counters <=> other.counters
+        end
+      end
+    end
+
+    def to_hash
+      counters.dup
+    end
+
+    def to_a
+      counters.to_a
     end
 
     def to_s
