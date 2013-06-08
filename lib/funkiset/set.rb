@@ -16,14 +16,10 @@ module Funkiset
 
     def each(*args, &block)
       if block_given?
-        counters.each {|k,v| yield(k,v) }
+        counters.each { |k,v| yield(k,v) }
       else
         counters.each(args)
       end
-    end
-
-    def counter(key)
-      counters.find { |c| c.key == key }
     end
 
     def [](key)
@@ -31,21 +27,45 @@ module Funkiset
     end
 
     def []=(key, count)
-      counters[key] = count
+      entries[key] = count
+      counters[key]
+    end
+
+    def add(key, count)
+      entries[key] ||= 0
+      entries[key] += count
     end
 
     def <<(key)
-      entries[key] ||= 0
-      entries[key] += 1
-      counters
+      add(key, 1)
+      self
     end
+
+    def dup
+      self.class.new(counters)
+    end
+
+    def merge(other)
+      other.counters.reduce(self.dup) do |m, (k, v)|
+        m.add(k,v); m
+      end
+    end
+    alias_method :+, :merge
 
     def keys
       counters.keys
     end
 
     def counts
-      map(&:count)
+      counters.values
+    end
+
+    def to_s
+      counters.map{ |k,c| "#{k}: #{c}"}.join(', ')
+    end
+
+    def inspect
+      "<Funkiset::Set #{to_s}>"
     end
 
   end
