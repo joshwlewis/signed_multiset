@@ -4,42 +4,72 @@ module Funkiset
 
     def initialize(*args)
       Hash[*args].each do |k,n|
-        items << Counter.new(k,n)
+        counters << Counter.new(k,n)
       end
     end
 
-    def items
-      @items ||= []
+    def counters
+      @counters ||= []
     end
 
     def each(*args, &block)
       if block_given?
-        items.each {|i| yield i }
+        counters.each {|c| yield c }
       else
-        items.each(args)
+        counters.each(args)
       end
     end
 
-    def add(key, number=1)
-      if item = self[key]
-        item.number += number
-      else
-        item = Counter.new(key, number)
-        items << item
-      end
-      item
+    def counter(key)
+      counters.find { |c| c.key == key }
     end
 
     def [](key)
-      items.find { |i| i.key == key }
+      if c = counter(key)
+        c.count
+      end
+    end
+
+    def []=(key, count)
+      modify_count(key, count)
+      self[key]
+    end
+
+    def <<(key)
+      modify_count(key){ |c| c + 1 }
+      self
     end
 
     def keys
       map(&:key)
     end
 
-    def <<(key)
-      add(key)
+    def counts
+      map(&:count)
+    end
+
+    private
+
+    def init_counter(key)
+      unless c = counter(key)
+        counters << c = Counter.new(key, 0)
+      end
+      c
+    end
+
+    def delete_zeros
+      counters.delete_if{|c| c.count == 0 }
+    end
+
+    def modify_count(key, count=0, &block)
+      c = init_counter(key)
+      if block_given?
+        c.count = yield(c.count)
+      else
+        c.count = count
+      end
+      delete_zeros
+      counter(key)
     end
 
   end
