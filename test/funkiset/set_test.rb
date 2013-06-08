@@ -10,9 +10,13 @@ describe Funkiset::Set do
       set = Funkiset::Set.new
       set.keys.must_equal([])
     end
-    it "must accept pairs" do
-      set = Funkiset::Set.new('a', 1, 'b', 2)
-      set.keys.must_equal(['a','b'])
+    it "must accept an Array" do
+      set = Funkiset::Set.new([:a, :b, :c, :a, :b])
+      set.keys.must_equal([:a, :b, :c])
+    end
+    it "must accept a Funkiset" do
+      set = Funkiset::Set.new(subject)
+      set.keys.must_equal([:foo, :bar])
     end
   end
 
@@ -83,7 +87,7 @@ describe Funkiset::Set do
     end
   end
 
-  describe "merge" do
+  describe "merge (+)" do
     let(:other){ Funkiset::Set.new(foo: -3, qux: 2)}
     let(:merged) { subject.merge(other) }
     it "should return a new set" do
@@ -97,5 +101,6 @@ describe Funkiset::Set do
       merged[:qux].must_equal(2)
     end
   end
+
 
 end

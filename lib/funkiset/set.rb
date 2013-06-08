@@ -2,8 +2,14 @@ module Funkiset
   class Set
     include Enumerable
 
-    def initialize(*args)
-      @entries = Hash[*args]
+    def self.[](*list)
+      new(list)
+    end
+
+    def initialize(object=nil)
+      if object.is_a?(Enumerable)
+        object.each { |k, v| add(k, v || 1) }
+      end
     end
 
     def entries
