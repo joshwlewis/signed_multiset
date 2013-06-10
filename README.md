@@ -1,4 +1,4 @@
-# Funkiset
+# SignedMultiset
 
 TODO: Write a gem description
 
@@ -6,7 +6,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'funkiset'
+    gem 'signed_multiset'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install funkiset
+    $ gem install signed_multiset
 
 ## Usage
 

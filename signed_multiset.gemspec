@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'funkiset/version'
+require 'signed_multiset/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "funkiset"
-  spec.version       = Funkiset::VERSION
+  spec.name          = "signed_multiset"
+  spec.version       = SignedMultiset::VERSION
   spec.authors       = ["Josh Lewis"]
   spec.email         = ["josh.w.lewis@gmail.com"]
   spec.description   = %q{Data Structure for Multisets with negative multiplicities}

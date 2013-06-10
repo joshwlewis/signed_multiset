@@ -1,4 +1,4 @@
-class Funkiset
+class SignedMultiset
 
   include Enumerable
   include Comparable
@@ -10,7 +10,7 @@ class Funkiset
     new(list)
   end
 
-  # Create a new Funkiset instance.
+  # Create a new SignedMultiset instance.
   #
   # @param object [Enumerable, nil] An array of keys, or key-muliplicity pairs.
   def initialize(object=nil)
@@ -76,22 +76,22 @@ class Funkiset
   end
 
   # Creates a new instance of equal to current instance
-  # @return [Funkiset]
+  # @return [SignedMultiset]
   def dup
     self.class.new(multiplicities)
   end
 
-  # Combine self with another Funkiset via addition to create a merged instance.
+  # Combine self with another SignedMultiset via addition to create a merged instance.
   #
-  # @param other [Funkiset]
-  # @return [Funkiset]
+  # @param other [SignedMultiset]
+  # @return [SignedMultiset]
   def +(other)
     other.multiplicities.reduce(self.dup) do |m, (k, v)|
       m.increment(k,v); m
     end
   end
 
-  # Combine self with another Funkiset via subtraction to create a merged instance.
+  # Combine self with another SignedMultiset via subtraction to create a merged instance.
   #
   # @param other (see #+)
   # @return (see #+)
@@ -101,7 +101,7 @@ class Funkiset
     end
   end
 
-  # Combine self with another Funkiset via union to create a merged instance.
+  # Combine self with another SignedMultiset via union to create a merged instance.
   #
   # @param other (see #+)
   # @return (see #+)
@@ -111,7 +111,7 @@ class Funkiset
     end
   end
 
-  # Combine self with another Funkiset via intersection to create a merged instance.
+  # Combine self with another SignedMultiset via intersection to create a merged instance.
   #
   # @param other (see #+)
   # @return (see #+)
@@ -144,7 +144,7 @@ class Funkiset
   end
   alias_method :sum, :cardinality
 
-  # Get the count of unique keys in the Funkiset.
+  # Get the count of unique keys in the SignedMultiset.
   #
   # @return [Integer]
   def size
@@ -152,7 +152,7 @@ class Funkiset
   end
   alias_method :length, :size
 
-  # Compare self with another Funkiset
+  # Compare self with another SignedMultiset
   #
   # @param other (see #+)
   # @return [-1,0,1]
@@ -183,7 +183,7 @@ class Funkiset
   end
 
   def inspect
-    "<Funkiset #{to_s}>"
+    "<SignedMultiset #{to_s}>"
   end
 
   private
