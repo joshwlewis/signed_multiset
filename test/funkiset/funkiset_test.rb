@@ -1,30 +1,30 @@
 require 'test_helper'
 
-describe Funkiset::Set do
-  subject { Funkiset::Set.new(foo: 4, bar: 2, baz: 0) }
-  let(:other){ Funkiset::Set.new(foo: -3, qux: 2) }
+describe Funkiset do
+  subject { Funkiset.new(foo: 4, bar: 2, baz: 0) }
+  let(:other){ Funkiset.new(foo: -3, qux: 2) }
 
   describe "#initialize" do
     it "must accept a hash" do
       subject.keys.must_equal([:foo, :bar])
     end
     it "must accept no arguments" do
-      set = Funkiset::Set.new
+      set = Funkiset.new
       set.keys.must_equal([])
     end
     it "must accept an Array" do
-      set = Funkiset::Set.new([:a, :b, :c, :a, :b])
+      set = Funkiset.new([:a, :b, :c, :a, :b])
       set.keys.must_equal([:a, :b, :c])
     end
     it "must accept a Funkiset" do
-      set = Funkiset::Set.new(subject)
+      set = Funkiset.new(subject)
       set.keys.must_equal([:foo, :bar])
     end
   end
 
   describe "::[]" do
     it "must create a new set" do
-      set = Funkiset::Set[:a, :b, :b, :c]
+      set = Funkiset[:a, :b, :b, :c]
       set.keys.must_equal([:a, :b, :c])
     end
   end
@@ -99,7 +99,7 @@ describe Funkiset::Set do
   describe "#+" do
     let(:merged) { subject + other }
     it "should return a new set" do
-      merged.must_be_instance_of(Funkiset::Set)
+      merged.must_be_instance_of(Funkiset)
       merged.wont_equal(subject)
       merged.wont_equal(other)
     end
@@ -113,7 +113,7 @@ describe Funkiset::Set do
   describe "#-" do
     let(:merged) { subject - other }
     it "should return a new set" do
-      merged.must_be_instance_of(Funkiset::Set)
+      merged.must_be_instance_of(Funkiset)
       merged.wont_equal(subject)
       merged.wont_equal(other)
     end
@@ -127,7 +127,7 @@ describe Funkiset::Set do
   describe "#&" do
     let(:merged) { subject & other }
     it "should reutrn a new set" do
-      subject.must_be_instance_of(Funkiset::Set)
+      subject.must_be_instance_of(Funkiset)
       merged.wont_equal(subject)
       merged.wont_equal(other)
     end
@@ -142,7 +142,7 @@ describe Funkiset::Set do
   describe "#|" do
     let(:merged) { subject | other }
     it "should reutrn a new set" do
-      subject.must_be_instance_of(Funkiset::Set)
+      subject.must_be_instance_of(Funkiset)
       merged.wont_equal(subject)
       merged.wont_equal(other)
     end
@@ -179,8 +179,8 @@ describe Funkiset::Set do
   end
 
   describe "#<=>" do
-    let(:small) { Funkiset::Set[:foo, :bar] }
-    let(:large) { Funkiset::Set[:foo, :bar, :baz, :foo, :bar, :qux, :foo, :bar] }
+    let(:small) { Funkiset[:foo, :bar] }
+    let(:large) { Funkiset[:foo, :bar, :baz, :foo, :bar, :qux, :foo, :bar] }
     let(:equal) { subject.dup }
 
     it "should return 1 when compared to a smaller set" do
