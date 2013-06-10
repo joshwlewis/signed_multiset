@@ -29,36 +29,36 @@ describe Funkiset do
     end
   end
 
-  describe "counters" do
+  describe "multiplicities" do
     it "must be an Enumerable" do
-      subject.counters.must_be_kind_of(Enumerable)
+      subject.multiplicities.must_be_kind_of(Enumerable)
     end
-    it "should delete keys with zero counts" do
-      subject.counters.keys.must_equal([:foo, :bar])
+    it "should delete keys with zero multiplicitys" do
+      subject.multiplicities.keys.must_equal([:foo, :bar])
     end
   end
 
   describe "#[]" do
-    it "must find existing keys and return count" do
+    it "must find existing keys and return multiplicity" do
       subject[:foo].must_equal(4)
       subject[:bar].must_equal(2)
     end
     it "must return nil for missing keys" do
       subject[:qux].must_be_nil
     end
-    it "must return nil for keys with zero counts" do
+    it "must return nil for keys with zero multiplicitys" do
       subject[:bax].must_be_nil
     end
   end
 
   describe "#[]=" do
-    it "must set count for exisiting keys" do
+    it "must set multiplicity for exisiting keys" do
       subject[:foo].must_equal(4)
       subject[:foo] = -1
       subject[:foo].must_equal(-1)
     end
 
-    it "must increment key and set count for new keys" do
+    it "must increment key and set multiplicity for new keys" do
       subject[:baz].must_be_nil
       subject[:baz] = 3
       subject[:baz].must_equal(3)
@@ -166,14 +166,14 @@ describe Funkiset do
     end
   end
 
-  describe "#sum" do
-    it "should return the total of all counts" do
-      subject.sum.must_equal(6)
+  describe "#cardinality" do
+    it "should return the total of all multiplicitys" do
+      subject.cardinality.must_equal(6)
     end
   end
 
   describe "#size" do
-    it "should return the count of non-zero keys" do
+    it "should return the multiplicity of non-zero keys" do
       subject.size.must_equal(2)
     end
   end

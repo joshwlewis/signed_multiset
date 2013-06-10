@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Funkiset::VERSION
   spec.authors       = ["Josh Lewis"]
   spec.email         = ["josh.w.lewis@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Data Structure for Multisets with negative multiplicities}
+  spec.summary       = %q{Data Structure for Multisets with negative multiplicities}
   spec.homepage      = ""
   spec.license       = "MIT"
 
