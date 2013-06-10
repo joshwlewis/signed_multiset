@@ -9,7 +9,7 @@ module Funkiset
 
     def initialize(object=nil)
       if object.is_a?(Enumerable)
-        object.each { |k, v| add(k, v || 1) }
+        object.each { |k, v| increment(k, v || 1) }
       end
     end
 
@@ -38,13 +38,13 @@ module Funkiset
       counters[key]
     end
 
-    def add(key, count)
+    def increment(key, count)
       entries[key] ||= 0
       entries[key] += count
     end
 
     def <<(key)
-      add(key, 1)
+      increment(key, 1)
       self
     end
 
@@ -52,12 +52,30 @@ module Funkiset
       self.class.new(counters)
     end
 
-    def merge(other)
+    def +(other)
       other.counters.reduce(self.dup) do |m, (k, v)|
-        m.add(k,v); m
+        m.increment(k,v); m
       end
     end
-    alias_method :+, :merge
+
+    def -(other)
+      other.counters.reduce(self.dup) do |m, (k, v)|
+        m.increment(k,-v); m
+      end
+    end
+
+    def |(other)
+      (keys | other.keys).reduce(self.class.new) do |m, k|
+        m.increment(k, [self[k] || 0, other[k] || 0].max); m
+      end
+    end
+
+    def &(other)
+      (keys & other.keys).reduce(self.class.new) do |m, k|
+        value = [self[k], other[k]].min
+        m.increment(k, value); m
+      end
+    end
 
     def keys
       counters.keys
@@ -70,6 +88,7 @@ module Funkiset
     def sum
       counts.inject(&:+)
     end
+    alias_method :cardinality, :sum
 
     def size
       keys.size

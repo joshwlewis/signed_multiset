@@ -2,6 +2,8 @@ require 'test_helper'
 
 describe Funkiset::Set do
   subject { Funkiset::Set.new(foo: 4, bar: 2, baz: 0) }
+  let(:other){ Funkiset::Set.new(foo: -3, qux: 2) }
+
   describe "#initialize" do
     it "must accept a hash" do
       subject.keys.must_equal([:foo, :bar])
@@ -56,22 +58,22 @@ describe Funkiset::Set do
       subject[:foo].must_equal(-1)
     end
 
-    it "must add key and set count for new keys" do
+    it "must increment key and set count for new keys" do
       subject[:baz].must_be_nil
       subject[:baz] = 3
       subject[:baz].must_equal(3)
     end
   end
 
-  describe "add" do
+  describe "increment" do
     it "should increment existing keys" do
       subject[:bar].must_equal(2)
-      subject.add(:bar, -4)
+      subject.increment(:bar, -4)
       subject[:bar].must_equal(-2)
     end
-    it "should add new keys" do
+    it "should increment new keys" do
       subject[:qux].must_be_nil
-      subject.add(:qux, 2)
+      subject.increment(:qux, 2)
       subject[:qux].must_equal(2)
     end
   end
@@ -82,7 +84,7 @@ describe Funkiset::Set do
       subject << :bar
       subject[:bar].must_equal(3)
     end
-    it "should add new keys" do
+    it "should increment new keys" do
       subject[:qux].must_be_nil
       subject << :qux
       subject[:qux].must_equal(1)
@@ -94,9 +96,8 @@ describe Funkiset::Set do
     end
   end
 
-  describe "#merge" do
-    let(:other){ Funkiset::Set.new(foo: -3, qux: 2)}
-    let(:merged) { subject.merge(other) }
+  describe "#+" do
+    let(:merged) { subject + other }
     it "should return a new set" do
       merged.must_be_instance_of(Funkiset::Set)
       merged.wont_equal(subject)
@@ -105,6 +106,50 @@ describe Funkiset::Set do
     it "should sum the keys" do
       merged[:foo].must_equal(1)
       merged[:bar].must_equal(2)
+      merged[:qux].must_equal(2)
+    end
+  end
+
+  describe "#-" do
+    let(:merged) { subject - other }
+    it "should return a new set" do
+      merged.must_be_instance_of(Funkiset::Set)
+      merged.wont_equal(subject)
+      merged.wont_equal(other)
+    end
+    it "should sum the keys" do
+      merged[:foo].must_equal(7)
+      merged[:bar].must_equal(2)
+      merged[:qux].must_equal(-2)
+    end
+  end
+
+  describe "#&" do
+    let(:merged) { subject & other }
+    it "should reutrn a new set" do
+      subject.must_be_instance_of(Funkiset::Set)
+      merged.wont_equal(subject)
+      merged.wont_equal(other)
+    end
+    it "should return the intersection" do
+      merged[:foo].must_equal(-3)
+      merged[:bar].must_be_nil
+      merged[:baz].must_be_nil
+      merged[:qux].must_be_nil
+    end
+  end
+
+  describe "#|" do
+    let(:merged) { subject | other }
+    it "should reutrn a new set" do
+      subject.must_be_instance_of(Funkiset::Set)
+      merged.wont_equal(subject)
+      merged.wont_equal(other)
+    end
+    it "should return the union" do
+      merged[:foo].must_equal(4)
+      merged[:bar].must_equal(2)
+      merged[:baz].must_be_nil
       merged[:qux].must_equal(2)
     end
   end
@@ -134,9 +179,10 @@ describe Funkiset::Set do
   end
 
   describe "#<=>" do
-    let(:small) { Funkiset::Set[:foo, :bar]}
-    let(:large) { Funkiset::Set[:foo, :bar, :baz, :foo, :bar, :qux, :foo, :bar]}
+    let(:small) { Funkiset::Set[:foo, :bar] }
+    let(:large) { Funkiset::Set[:foo, :bar, :baz, :foo, :bar, :qux, :foo, :bar] }
     let(:equal) { subject.dup }
+
     it "should return 1 when compared to a smaller set" do
       (subject <=> small).must_equal(1)
     end
