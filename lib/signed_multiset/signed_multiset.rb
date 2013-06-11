@@ -53,7 +53,7 @@ class SignedMultiset
   # @return [Integer] The multiplicity for the key
   def []=(key, multiplicity)
     entries[key] = multiplicity
-    [key]
+    self[key]
   end
 
   # Increment the multiplicity for a key.
@@ -64,7 +64,7 @@ class SignedMultiset
   def increment(key, value)
     entries[key] ||= 0
     entries[key] += value
-    [key]
+    self[key]
   end
 
   # Increment multiplicity by 1 for a key. This method is chainable.
