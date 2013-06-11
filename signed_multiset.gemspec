@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = SignedMultiset::VERSION
   spec.authors       = ["Josh Lewis"]
   spec.email         = ["josh.w.lewis@gmail.com"]
-  spec.description   = %q{Data Structure for Multisets with negative multiplicities}
-  spec.summary       = %q{Data Structure for Multisets with negative multiplicities}
-  spec.homepage      = ""
+  spec.description   = %q{Multisets with negative membership}
+  spec.summary       = %q{Signed Multiset is a Ruby implementation of a Multiset that allows negative membership. You can think of it as a Multiset or Bag that allows for negative counts. It feels like a Ruby Hash or Array, but with some differences.}
+  spec.homepage      = "http://github.com/joshwlewis/signed_multiset"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
