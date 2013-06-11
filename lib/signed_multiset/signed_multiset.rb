@@ -23,7 +23,7 @@ class SignedMultiset
   #
   # @return [Hash]
   def multiplicities
-    entries.delete_if{|k,v| v == 0}
+    entries.reject{|k,v| v == 0}
   end
 
   # Iterate over the multiplicity collection.
@@ -53,7 +53,7 @@ class SignedMultiset
   # @return [Integer] The multiplicity for the key
   def []=(key, multiplicity)
     entries[key] = multiplicity
-    multiplicities[key]
+    [key]
   end
 
   # Increment the multiplicity for a key.
@@ -64,6 +64,7 @@ class SignedMultiset
   def increment(key, value)
     entries[key] ||= 0
     entries[key] += value
+    [key]
   end
 
   # Increment multiplicity by 1 for a key. This method is chainable.
@@ -73,6 +74,14 @@ class SignedMultiset
   def <<(key)
     increment(key, 1)
     self
+  end
+
+  # Remove key completely from the set, similar to [key]=0
+  #
+  # @param key [Object] The key to remove
+  # @return [Integer] The multiplicity of the item removed.
+  def delete(key)
+    entries.delete(key)
   end
 
   # Creates a new instance of equal to current instance
@@ -117,8 +126,7 @@ class SignedMultiset
   # @return (see #+)
   def &(other)
     (keys & other.keys).reduce(self.class.new) do |m, k|
-      value = [self[k], other[k]].min
-      m.increment(k, value); m
+      m.increment(k, [self[k], other[k]].min); m
     end
   end
 
@@ -179,11 +187,11 @@ class SignedMultiset
   end
 
   def to_s
-    multiplicities.map{ |k,c| "#{k}: #{c}"}.join(', ')
+    multiplicities.map{ |k,m| "#{k}: #{m}"}.join(', ')
   end
 
   def inspect
-    "<SignedMultiset #{to_s}>"
+    "<#{self.class} #{to_s}>"
   end
 
   private

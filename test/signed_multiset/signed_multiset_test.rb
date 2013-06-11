@@ -65,7 +65,7 @@ describe SignedMultiset do
     end
   end
 
-  describe "increment" do
+  describe "#increment" do
     it "should increment existing keys" do
       subject[:bar].must_equal(2)
       subject.increment(:bar, -4)
@@ -78,7 +78,7 @@ describe SignedMultiset do
     end
   end
 
-  describe "<<" do
+  describe "#<<" do
     it "should increment existing keys" do
       subject[:bar].must_equal(2)
       subject << :bar
@@ -93,6 +93,14 @@ describe SignedMultiset do
       subject << :foo << :baz << :foo
       subject[:foo].must_equal(6)
       subject[:baz].must_equal(1)
+    end
+  end
+
+  describe "#delete" do
+    it "should remove the key" do
+      subject[:foo].must_equal(4)
+      subject.delete(:foo).must_equal(4)
+      subject[:foo].must_be_nil
     end
   end
 
