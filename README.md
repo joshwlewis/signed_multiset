@@ -7,7 +7,7 @@
 
 Signed Multiset is a Ruby implementation of a Multiset that allows negative membership.
 
-You can think of it as a Multiset or Bag that allows for negative counts. It feels like a Ruby Hash or Array, but with some differences:
+You can think of it as a Multiset or Bag that allows for negative counts. It's functionality is very similar to Sorted Sets available in Redis (albeit without the storage functionality). It feels like a Ruby Hash or Array, but with some differences:
 
 - A key (any ruby object) can be added to or removed from the SignedMultiset any number of times. The number of times it is included in the multiset (positive or negative) is referred to as it's multiplicity.
 
@@ -65,7 +65,7 @@ set.cardinality
 set.size
 # => 3
 
-other_set = SignedMultiset[:a, :c, :d, :d]
+other_set = SignedMultiset(:a, :c, :d, :d)
 # => <SignedMultiset a: 1, c: 1, d: 2>
 
 set + other_set
@@ -75,7 +75,7 @@ set & other_set
 # => <SignedMultiset c: 1, d: -3>
 
 set | other_set
-=> <SignedMultiset b: 2, c: 3, d: 2, a: 1>
+# => <SignedMultiset b: 2, c: 3, d: 2, a: 1>
 ```
 
 ## Contributing

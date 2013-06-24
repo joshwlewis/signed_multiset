@@ -1,4 +1,7 @@
-require 'test_helper'
+require 'signed_multiset'
+require 'minitest/spec'
+require 'minitest/autorun'
+require 'minitest/pride'
 
 describe SignedMultiset do
   subject { SignedMultiset.new(foo: 4, bar: 2, baz: 0) }
@@ -20,11 +23,8 @@ describe SignedMultiset do
       set = SignedMultiset.new(subject)
       set.keys.must_equal([:foo, :bar])
     end
-  end
-
-  describe "::[]" do
-    it "must create a new set" do
-      set = SignedMultiset[:a, :b, :b, :c]
+    it "must accept additional arguments" do
+      set = SignedMultiset.new(:a, :b, :c)
       set.keys.must_equal([:a, :b, :c])
     end
   end
@@ -187,8 +187,8 @@ describe SignedMultiset do
   end
 
   describe "#<=>" do
-    let(:small) { SignedMultiset[:foo, :bar] }
-    let(:large) { SignedMultiset[:foo, :bar, :baz, :foo, :bar, :qux, :foo, :bar] }
+    let(:small) { SignedMultiset.new([:foo, :bar]) }
+    let(:large) { SignedMultiset.new([:foo, :bar, :baz, :foo, :bar, :qux, :foo, :bar]) }
     let(:equal) { subject.dup }
 
     it "should return 1 when compared to a smaller set" do
@@ -200,5 +200,12 @@ describe SignedMultiset do
     it "should return 0 when compared to an equal set" do
       (subject <=> equal).must_equal(0)
     end
+  end
+end
+
+describe "::SignedMultiset()" do
+  it "must create a new set" do
+    set = SignedMultiset([:a, :b, :b, :c])
+    set.keys.must_equal([:a, :b, :c])
   end
 end
