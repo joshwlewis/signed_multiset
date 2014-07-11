@@ -1,6 +1,6 @@
 require 'signed_multiset'
-require 'minitest/spec'
 require 'minitest/autorun'
+require 'minitest/spec'
 require 'minitest/pride'
 
 describe SignedMultiset do

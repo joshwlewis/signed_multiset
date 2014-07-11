@@ -4,10 +4,13 @@ class SignedMultiset
   include Enumerable
   include Comparable
 
+  attr_reader :entries
+
   # Create a new SignedMultiset instance.
   #
   # @param object [Enumerable, nil] An array of keys, or key-muliplicity pairs.
   def initialize(*args)
+    @entries = {}
     obj = args.count == 1 ? args.first : args
     if obj.respond_to?(:each)
       obj.each { |k, v| increment(k, v || 1) }
@@ -191,14 +194,6 @@ class SignedMultiset
     "<#{self.class} #{to_s}>"
   end
 
-  private
-
-  # Get the key-multiplicity pairs (even those with zero multiplicities).
-  #
-  # @return [Hash]
-  def entries
-    @entries ||= {}
-  end
 end
 
 def SignedMultiset(input)
